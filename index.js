@@ -1,6 +1,7 @@
 const http = require("http");
 const fs = require("fs");
-// const qs = require('')
+const pn = require('prime-number') 
+const fc = require('factorial')
 const port = 3000;
 const hostName = "127.0.0.1";
 const server = http.createServer((req, res) => {
@@ -70,12 +71,30 @@ const server = http.createServer((req, res) => {
     res.write("page not found");
     res.end();
     }
-  } else {
+  }
+  else if(req.url.startsWith('/comps/primes/')){
+    let num =  Number(req.url.split("/")[3]);
+    let a =pn(num)
+    res.writeHead(200, { "Content-Type": "text/json" });
+          res.write(`${a}`);
+          res.end();
+  }
+  else if(req.url.startsWith('/comps/factorial/')){
+    let num =  Number(req.url.split("/")[3]);
+    let a =fc(num)
+    res.writeHead(200, { "Content-Type": "text/json" });
+          res.write(`${a}`);
+          res.end();
+  }
+   else {
     res.statusCode = 404;
     res.write("page not found");
     res.end();
   }
 });
+
+
+
 
 server.listen(port, hostName, () => {
   console.log(`server running at http://${hostName}:${port}`);
